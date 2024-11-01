@@ -1,0 +1,8 @@
+# Misc
+.vs
+# Visual Studio files
+.ntvs_analysis.dat
+.vs
+**/bin
+**/obj
+**/appsettings.*.json
