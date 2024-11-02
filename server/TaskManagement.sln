@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManagement.Domain", "Ta
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManagement.Application", "TaskManagement.Application\TaskManagement.Application.csproj", "{9E1D3BEC-6F9B-4338-BCF1-FDB9F46E08F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagement.Persistence", "TaskManagement.Persistence\TaskManagement.Persistence.csproj", "{0EFE066B-BAC6-4769-83F4-449520FD9DA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManagement.Persistence", "TaskManagement.Persistence\TaskManagement.Persistence.csproj", "{0EFE066B-BAC6-4769-83F4-449520FD9DA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagement.Infrastructure", "TaskManagement.Infrastructure\TaskManagement.Infrastructure.csproj", "{4853C4A8-F7EB-4599-A83F-427418596CE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManagement.Infrastructure", "TaskManagement.Infrastructure\TaskManagement.Infrastructure.csproj", "{4853C4A8-F7EB-4599-A83F-427418596CE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagement.API", "TaskManagement.API\TaskManagement.API.csproj", "{960F2A02-3F65-4EB5-807A-6E77D458DA63}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagement.API", "TaskManagement.API\TaskManagement.API.csproj", "{F67F9561-0364-4C42-B7D3-02DAF87CE9D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{4853C4A8-F7EB-4599-A83F-427418596CE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4853C4A8-F7EB-4599-A83F-427418596CE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4853C4A8-F7EB-4599-A83F-427418596CE2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{960F2A02-3F65-4EB5-807A-6E77D458DA63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{960F2A02-3F65-4EB5-807A-6E77D458DA63}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{960F2A02-3F65-4EB5-807A-6E77D458DA63}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{960F2A02-3F65-4EB5-807A-6E77D458DA63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F67F9561-0364-4C42-B7D3-02DAF87CE9D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F67F9561-0364-4C42-B7D3-02DAF87CE9D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F67F9561-0364-4C42-B7D3-02DAF87CE9D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F67F9561-0364-4C42-B7D3-02DAF87CE9D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
