@@ -24,6 +24,6 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMany(u => u.TaggedTasks)
             .WithOne(ut => ut.User)
             .HasForeignKey(ut => ut.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

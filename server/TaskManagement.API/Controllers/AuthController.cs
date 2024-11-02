@@ -1,20 +1,25 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Mapster;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using TaskManagement.API.Models.UserModels;
+using TaskManagement.Application.Features.Users.Commands.RegisterUser;
 
 namespace TaskManagement.API.Controllers;
 
 [Route("api/auth")]
 [ApiController]
-public class AuthController : ControllerBase
+public class AuthController(ISender _sender) : ControllerBase
 {
     [HttpPost("sign-up")]
-    public IActionResult SignUp()
+    public async Task<IActionResult> SignUp(RegisterUserRequest request)
     {
-        return Ok();
+        var command = request.Adapt<RegisterUserCommand>();
+        var result = await _sender.Send(command);
+        var response = result.Adapt<RegisterUserResponse>();
+        return Ok(response);
     }
 
     [HttpPost("login")]
-    [Authorize]
     public IActionResult Login()
     {
         return Ok();

@@ -146,7 +146,7 @@ namespace TaskManagement.Persistence.Migrations
                     b.HasOne("TaskManagement.Domain.Entities.User", "User")
                         .WithMany("Tasks")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -163,7 +163,7 @@ namespace TaskManagement.Persistence.Migrations
                     b.HasOne("TaskManagement.Domain.Entities.User", "User")
                         .WithMany("TaggedTasks")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Task");

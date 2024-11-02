@@ -12,8 +12,9 @@ public class UserRepository(ApplicationDbContext _dbContext) : IUserRepository
         return user;
     }
 
-    public async Task AddAsync(User user)
+    public async Task<User> AddAsync(User user)
     {
-        await _dbContext.Set<User>().AddAsync(user);
+        var addeduser = await _dbContext.Set<User>().AddAsync(user);
+        return addeduser.Entity;
     }
 }
