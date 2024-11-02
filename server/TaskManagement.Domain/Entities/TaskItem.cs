@@ -2,7 +2,7 @@
 
 namespace TaskManagement.Domain.Entities;
 
-public class Task : Entity, IAuditableEntity
+public class TaskItem : Entity, IAuditableEntity
 {
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
@@ -11,7 +11,7 @@ public class Task : Entity, IAuditableEntity
     public int? RemindBeforeDeadlineByMinutes { get; set; }
     public DateTimeOffset DueDate { get; set; }
 
-    public int UserId { get; set; }
+    public Guid UserId { get; set; }
     public User User { get; set; }
     public ICollection<TaskUserTag> TaggedUsers { get; set; } = new List<TaskUserTag>();
 

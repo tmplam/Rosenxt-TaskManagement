@@ -7,7 +7,7 @@ public class User : AggregateRoot, IAuditableEntity
     public string Email { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
-    public ICollection<Task> Tasks { get; set; } = new List<Task>();
+    public ICollection<TaskItem> Tasks { get; set; } = new List<TaskItem>();
     public ICollection<TaskUserTag> TaggedTasks { get; set; } = new List<TaskUserTag>();
 
     public DateTimeOffset CreatedAt { get; set; }

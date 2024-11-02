@@ -4,9 +4,9 @@ namespace TaskManagement.Domain.Entities;
 
 public class TaskUserTag : Entity, IAuditableEntity
 {
-    public int TaskId { get; set; }
-    public Task Task { get; set; }
-    public int UserId { get; set; }
+    public Guid TaskId { get; set; }
+    public TaskItem Task { get; set; }
+    public Guid UserId { get; set; }
     public User User { get; set; }
 
     public DateTimeOffset CreatedAt { get; set; }
