@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TaskManagement.API.Controllers;
 
@@ -9,12 +10,13 @@ public class AuthController : ControllerBase
     [HttpPost("sign-up")]
     public IActionResult SignUp()
     {
-        return null;
+        return Ok();
     }
 
     [HttpPost("login")]
+    [Authorize]
     public IActionResult Login()
     {
-        return null;
+        return Ok();
     }
 }

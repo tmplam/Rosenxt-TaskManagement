@@ -2,7 +2,9 @@
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TaskManagement.Domain.Repositories;
 using TaskManagement.Persistence.Interceptors;
+using TaskManagement.Persistence.Repositories;
 
 namespace TaskManagement.Persistence;
 
@@ -20,6 +22,10 @@ public static class DependencyInjection
             options.AddInterceptors(serviceProvider.GetServices<ISaveChangesInterceptor>());
             options.UseSqlServer(connectionString);
         });
+
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ITaskRepository, TaskRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }
