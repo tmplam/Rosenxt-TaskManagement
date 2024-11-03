@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagement.API.Models.UserModels;
 using TaskManagement.Application.Features.Users.Commands.RegisterUser;
+using TaskManagement.Application.Features.Users.Queries.Login;
 
 namespace TaskManagement.API.Controllers;
 
@@ -11,7 +12,7 @@ namespace TaskManagement.API.Controllers;
 public class AuthController(ISender _sender) : ControllerBase
 {
     [HttpPost("sign-up")]
-    public async Task<IActionResult> SignUp(RegisterUserRequest request)
+    public async Task<IActionResult> SignUp([FromBody] RegisterUserRequest request)
     {
         var command = request.Adapt<RegisterUserCommand>();
         var result = await _sender.Send(command);
@@ -20,8 +21,11 @@ public class AuthController(ISender _sender) : ControllerBase
     }
 
     [HttpPost("login")]
-    public IActionResult Login()
+    public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        return Ok();
+        var query = request.Adapt<LoginQuery>();
+        var result = await _sender.Send(query);
+        var response = result.Adapt<LoginResponse>();
+        return Ok(response);
     }
 }

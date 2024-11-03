@@ -9,15 +9,15 @@ namespace TaskManagement.Application.Features.Users.Commands.RegisterUser;
 public class RegisterUserHandler(
     IUserRepository _userRepository,
     IUnitOfWork _unitOfWork,
-    IPasswordService _passwordService) 
+    IPasswordService _passwordService)
     : ICommandHandler<RegisterUserCommand, RegisterUserResult>
 {
     public async Task<RegisterUserResult> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         var existingUser = await _userRepository.GetByEmailAsync(request.Email);
-        if (existingUser != null)
+        if (existingUser is not null)
         {
-            throw new BadRequestException("Email already existed");
+            throw new BadRequestException($"Email \"{request.Email}\" already existed");
         }
 
         var user = User.Create(Guid.NewGuid(), request.Email, request.Name, request.Password);
