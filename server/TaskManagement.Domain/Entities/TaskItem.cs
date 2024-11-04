@@ -10,7 +10,7 @@ public class TaskItem : Entity, IAuditableEntity
         string description, 
         bool isCompleted, 
         bool isNotified, 
-        int remindBeforeDeadlineByMinutes,
+        int? remindBeforeDeadlineByMinutes,
         DateTimeOffset dueDate,
         Guid userId) : base(id)
     {
@@ -47,7 +47,7 @@ public class TaskItem : Entity, IAuditableEntity
         Guid id,
         string title,
         string description,
-        int remindBeforeDeadlineByMinutes,
+        int? remindBeforeDeadlineByMinutes,
         DateTimeOffset dueDate,
         Guid userId)
     {

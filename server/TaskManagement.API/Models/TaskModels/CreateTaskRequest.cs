@@ -3,6 +3,6 @@
 public record CreateTaskRequest(
     string Title,
     string Description,
-    int RemindBeforeDeadlineByMinutes,
+    int? RemindBeforeDeadlineByMinutes,
     DateTimeOffset DueDate);
 

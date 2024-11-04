@@ -4,5 +4,5 @@ public record UpdateTaskRequest(
     Guid Id,
     string Title,
     string Description,
-    int RemindBeforeDeadlineByMinutes,
+    int? RemindBeforeDeadlineByMinutes,
     DateTimeOffset DueDate);
