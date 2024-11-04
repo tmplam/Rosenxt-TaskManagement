@@ -11,9 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Tasks\Commands\" />
     <Folder Include="Features\Tasks\DomainEventHandlers\" />
-    <Folder Include="Features\Tasks\Queries\" />
     <Folder Include="Features\Users\DomainEventHandlers\" />
   </ItemGroup>
 

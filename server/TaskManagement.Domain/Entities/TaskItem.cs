@@ -10,8 +10,9 @@ public class TaskItem : Entity, IAuditableEntity
         string description, 
         bool isCompleted, 
         bool isNotified, 
-        int remindBeforeDeadlineByMinutes, 
-        DateTimeOffset dueDate) : base(id)
+        int remindBeforeDeadlineByMinutes,
+        DateTimeOffset dueDate,
+        Guid userId) : base(id)
     {
         Title = title;
         Description = description;
@@ -19,6 +20,8 @@ public class TaskItem : Entity, IAuditableEntity
         IsNotified = isNotified;
         RemindBeforeDeadlineByMinutes = remindBeforeDeadlineByMinutes;
         DueDate = dueDate;
+        UserId = userId;
+
     }
     private TaskItem() 
     { 
@@ -44,12 +47,11 @@ public class TaskItem : Entity, IAuditableEntity
         Guid id,
         string title,
         string description,
-        bool isCompleted,
-        bool isNotified,
         int remindBeforeDeadlineByMinutes,
-        DateTimeOffset dueDate)
+        DateTimeOffset dueDate,
+        Guid userId)
     {
-        var task = new TaskItem(id, title, description, isCompleted, isNotified, remindBeforeDeadlineByMinutes, dueDate);
+        var task = new TaskItem(id, title, description, false, false, remindBeforeDeadlineByMinutes, dueDate, userId);
         return task;
     }
 }
