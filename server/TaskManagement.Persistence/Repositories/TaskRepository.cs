@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 using TaskManagement.Domain.Entities;
 using TaskManagement.Domain.Repositories;
 
@@ -9,7 +8,9 @@ public class TaskRepository(ApplicationDbContext _dbContext) : ITaskRepository
 {
     public async Task<TaskItem?> GetByIdAsync(Guid id)
     {
-        var task = await _dbContext.Set<TaskItem>().FirstOrDefaultAsync(task => task.Id == id);
+        var task = await _dbContext.Set<TaskItem>()
+            .Include(task => task.TaggedUsers)
+            .FirstOrDefaultAsync(task => task.Id == id);
         return task;
     }
 
@@ -21,7 +22,13 @@ public class TaskRepository(ApplicationDbContext _dbContext) : ITaskRepository
 
     public TaskItem Update(TaskItem task)
     {
-        var addedTask = _dbContext.Set<TaskItem>().Update(task);
-        return addedTask.Entity;
+        var updatedTask = _dbContext.Set<TaskItem>().Update(task);
+        return updatedTask.Entity;
+    }
+
+    public TaskItem Delete(TaskItem task)
+    {
+        var deletedTask = _dbContext.Set<TaskItem>().Remove(task);
+        return deletedTask.Entity;
     }
 }

@@ -24,7 +24,7 @@ public class TaskItem : Entity, IAuditableEntity
 
     }
     private TaskItem() 
-    { 
+    {
     }
 
     public string Title { get; set; } = string.Empty;

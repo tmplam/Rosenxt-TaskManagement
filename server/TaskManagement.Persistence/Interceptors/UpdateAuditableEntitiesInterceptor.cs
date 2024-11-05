@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using TaskManagement.Application.Abstractions;
 using TaskManagement.Domain.Primitives;
 
 namespace TaskManagement.Persistence.Interceptors;
 
-public sealed class UpdateAuditableEntitiesInterceptor : SaveChangesInterceptor
+public sealed class UpdateAuditableEntitiesInterceptor(IClaimService _claimService) : SaveChangesInterceptor
 {
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
@@ -33,13 +34,13 @@ public sealed class UpdateAuditableEntitiesInterceptor : SaveChangesInterceptor
         {
             if (entry.State == EntityState.Added)
             {
-                entry.Entity.CreatedBy = Guid.NewGuid();
+                entry.Entity.CreatedBy = _claimService.GetUserId() != null ? Guid.Parse(_claimService.GetUserId()) : null;
                 entry.Entity.CreatedAt = DateTimeOffset.UtcNow;
             }
 
             if (entry.State == EntityState.Added || entry.State == EntityState.Modified)
             {
-                entry.Entity.ModifiedBy = Guid.NewGuid();
+                entry.Entity.ModifiedBy = _claimService.GetUserId() != null ? Guid.Parse(_claimService.GetUserId()) : null;
                 entry.Entity.ModifiedAt = DateTimeOffset.UtcNow;
             }
         }

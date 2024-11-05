@@ -37,6 +37,12 @@ public class ExceptionHander(ILogger<ExceptionHander> logger) : IExceptionHandle
                 exception.GetType().Name,
                 context.Response.StatusCode = StatusCodes.Status404NotFound
             ),
+            UnauthorizedException =>
+            (
+                exception.Message,
+                exception.GetType().Name,
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized
+            ),
             _ =>
             (
                 exception.Message,

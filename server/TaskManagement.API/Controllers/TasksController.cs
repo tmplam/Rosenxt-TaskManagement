@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagement.API.Models.TaskModels;
 using TaskManagement.Application.Features.Tasks.Commands.CreateTask;
+using TaskManagement.Application.Features.Tasks.Commands.DeleteTask;
 using TaskManagement.Application.Features.Tasks.Commands.ToggleCompleteTask;
 using TaskManagement.Application.Features.Tasks.Commands.UpdateTask;
 
@@ -40,5 +41,13 @@ public class TasksController(ISender _sender) : ControllerBase
         var result = await _sender.Send(command);
         var response = result.Adapt<ToggleCompleteTaskResponse>();
         return Ok(response);
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete([FromRoute] Guid id)
+    {
+        var command = new DeleteTaskCommand(id);
+        var result = await _sender.Send(command);
+        return NoContent();
     }
 }
