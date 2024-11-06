@@ -11,15 +11,15 @@ public class LoginHandler(
     IJwtProvider _jwtProvider) 
     : IQueryHandler<LoginQuery, LoginResult>
 {
-    public async Task<LoginResult> Handle(LoginQuery request, CancellationToken cancellationToken)
+    public async Task<LoginResult> Handle(LoginQuery query, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByEmailAsync(request.Email);
+        var user = await _userRepository.GetByEmailAsync(query.Email);
         if (user is null)
         {
-            throw new BadRequestException($"Account with email \"{request.Email}\" not existed");
+            throw new BadRequestException($"Account with email \"{query.Email}\" not existed");
         }
 
-        if (_passwordService.VerifyPassword(user, request.Password))
+        if (_passwordService.VerifyPassword(user, query.Password))
         {
             var token = _jwtProvider.GenerateToken(user);
             return new LoginResult(token);

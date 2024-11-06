@@ -11,10 +11,10 @@ public sealed class ToggleCompleteTaskHandler(
     IUnitOfWork _unitOfWork,
     IClaimService _claimService) : ICommandHandler<ToggleCompleteTaskCommand, ToggleCompleteTaskResult>
 {
-    public async Task<ToggleCompleteTaskResult> Handle(ToggleCompleteTaskCommand request, CancellationToken cancellationToken)
+    public async Task<ToggleCompleteTaskResult> Handle(ToggleCompleteTaskCommand command, CancellationToken cancellationToken)
     {
-        var task = await _taskRepository.GetByIdAsync(request.Id);
-        if (task == null) throw new NotFoundException(nameof(TaskItem), request.Id);
+        var task = await _taskRepository.GetByIdAsync(command.Id);
+        if (task == null) throw new NotFoundException(nameof(TaskItem), command.Id);
 
         var userId = Guid.Parse(_claimService.GetUserId());
         if (userId != task.UserId) throw new UnauthorizedException("Unauthorized resource");

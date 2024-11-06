@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using TaskManagement.Domain.Entities;
 using TaskManagement.Domain.Repositories;
 
@@ -12,6 +13,16 @@ public class TaskRepository(ApplicationDbContext _dbContext) : ITaskRepository
             .Include(task => task.TaggedUsers)
             .FirstOrDefaultAsync(task => task.Id == id);
         return task;
+    }
+
+    public async Task<List<TaskItem>> GetAllAsync(Expression<Func<TaskItem, bool>>? predicate = null)
+    {
+        var tasks = _dbContext.Set<TaskItem>().AsQueryable();
+        if (predicate is not null)
+        {
+            tasks = tasks.Where(predicate);
+        }
+        return await tasks.ToListAsync();
     }
 
     public async Task<TaskItem> AddAsync(TaskItem task)

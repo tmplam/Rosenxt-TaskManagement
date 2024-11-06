@@ -1,6 +1,7 @@
 ﻿using TaskManagement.Application.Abstractions.Messagings;
+using TaskManagement.Application.Dtos;
 
 namespace TaskManagement.Application.Features.Tasks.Queries.GetTaskById;
 
-public class GetTaskByIdQuery() : IQuery<GetTaskByIdResult>;
-public class GetTaskByIdResult();
+public record GetTaskByIdQuery(Guid Id) : IQuery<GetTaskByIdResult>;
+public record GetTaskByIdResult(TaskItemDto Task);

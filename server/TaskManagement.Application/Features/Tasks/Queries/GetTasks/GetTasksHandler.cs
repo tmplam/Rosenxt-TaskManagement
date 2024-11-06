@@ -1,11 +1,21 @@
-﻿using TaskManagement.Application.Abstractions.Messagings;
+﻿using Mapster;
+using TaskManagement.Application.Abstractions;
+using TaskManagement.Application.Abstractions.Messagings;
+using TaskManagement.Application.Dtos;
+using TaskManagement.Domain.Repositories;
 
 namespace TaskManagement.Application.Features.Tasks.Queries.GetTasks;
 
-public class GetTasksHandler : IQueryHandler<GetTasksQuery, GetTasksResult>
+public class GetTasksHandler(
+    ITaskRepository _taskRepository,
+    IClaimService _claimService) : IQueryHandler<GetTasksQuery, GetTasksResult>
 {
-    public Task<GetTasksResult> Handle(GetTasksQuery request, CancellationToken cancellationToken)
+    public async Task<GetTasksResult> Handle(GetTasksQuery query, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var userId = Guid.Parse(_claimService.GetUserId());
+        var tasks = await _taskRepository.GetAllAsync(task => task.UserId == userId && (query.IsCompleted == null || task.IsCompleted == query.IsCompleted));
+        var taskDtos = tasks.Adapt<List<TaskItemDto>>();
+        
+        return new GetTasksResult(taskDtos);
     }
 }

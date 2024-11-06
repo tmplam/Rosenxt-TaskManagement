@@ -7,6 +7,8 @@ using TaskManagement.Application.Features.Tasks.Commands.CreateTask;
 using TaskManagement.Application.Features.Tasks.Commands.DeleteTask;
 using TaskManagement.Application.Features.Tasks.Commands.ToggleCompleteTask;
 using TaskManagement.Application.Features.Tasks.Commands.UpdateTask;
+using TaskManagement.Application.Features.Tasks.Queries.GetTaskById;
+using TaskManagement.Application.Features.Tasks.Queries.GetTasks;
 
 namespace TaskManagement.API.Controllers;
 
@@ -15,6 +17,24 @@ namespace TaskManagement.API.Controllers;
 [Authorize]
 public class TasksController(ISender _sender) : ControllerBase
 {
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> Get([FromRoute] Guid id)
+    {
+        var query = new GetTaskByIdQuery(id);
+        var result = await _sender.Send(query);
+        var response = result.Adapt<GetTaskByIdResponse>();
+        return Ok(response);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll([FromQuery] bool? isCompleted)
+    {
+        var query = new GetTasksQuery(isCompleted);
+        var result = await _sender.Send(query);
+        var response = result.Adapt<GetTasksResponse>();
+        return Ok(response);
+    }
+
     [HttpPost("create")]
     public async Task<IActionResult> Create([FromBody] CreateTaskRequest request)
     {
@@ -24,7 +44,7 @@ public class TasksController(ISender _sender) : ControllerBase
         return Created($"/tasks/{response.Id}", response);
     }
 
-    [HttpPost("update")]
+    [HttpPut("update")]
     public async Task<IActionResult> Update([FromBody] UpdateTaskRequest request)
     {
         var command = request.Adapt<UpdateTaskCommand>();
@@ -33,8 +53,8 @@ public class TasksController(ISender _sender) : ControllerBase
         return Ok(response);
     }
 
-    [HttpPost("{id:guid}/toggle-complete")]
-    public async Task<IActionResult> Update([FromRoute] Guid id)
+    [HttpPatch("{id:guid}/toggle-complete")]
+    public async Task<IActionResult> ToggleComplete([FromRoute] Guid id)
     {
         var request = new ToggleCompleteTaskRequest(id);
         var command = request.Adapt<ToggleCompleteTaskCommand>();

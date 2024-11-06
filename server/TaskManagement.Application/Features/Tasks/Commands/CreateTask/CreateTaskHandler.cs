@@ -10,15 +10,15 @@ public sealed class CreateTaskHandler(
     IUnitOfWork _unitOfWork,
     IClaimService _claimService) : ICommandHandler<CreateTaskCommand, CreateTaskResult>
 {
-    public async Task<CreateTaskResult> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
+    public async Task<CreateTaskResult> Handle(CreateTaskCommand command, CancellationToken cancellationToken)
     {
         var userId = Guid.Parse(_claimService.GetUserId());
         var taskItem = TaskItem.Create(
             Guid.NewGuid(),
-            request.Title,
-            request.Description,
-            request.RemindBeforeDeadlineByMinutes,
-            request.DueDate,
+            command.Title,
+            command.Description,
+            command.RemindBeforeDeadlineByMinutes,
+            command.DueDate,
             userId);
 
         taskItem = await _taskRepository.AddAsync(taskItem);
