@@ -35,7 +35,6 @@ namespace TaskManagement.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsCompleted = table.Column<bool>(type: "bit", nullable: false),
                     IsNotified = table.Column<bool>(type: "bit", nullable: false),
                     RemindBeforeDeadlineByMinutes = table.Column<int>(type: "int", nullable: true),

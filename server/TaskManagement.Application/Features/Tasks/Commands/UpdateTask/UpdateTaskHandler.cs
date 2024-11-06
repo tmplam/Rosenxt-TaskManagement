@@ -20,7 +20,6 @@ public sealed class UpdateTaskHandler(
         if (userId != task.UserId) throw new UnauthorizedException("Unauthorized resource");
 
         task.Title = command.Title;
-        task.Description = command.Description;
         task.RemindBeforeDeadlineByMinutes = command.RemindBeforeDeadlineByMinutes;
         task.DueDate = command.DueDate;
 

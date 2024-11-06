@@ -1,1 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* Custom material components */
+.custom-toggle-button-group .mat-button-toggle-checked {
+  background-color: #343dff !important;
+  color: #fff !important;
+}
+
+.custom-toggle-button-group .mat-pseudo-checkbox::after {
+  color: #fff !important;
+}
+
+.custom-toggle-button-group .mat-button-toggle {
+  background-color: white;
+  color: #000;
+}
+
+.mat-button-toggle-standalone.mat-button-toggle-appearance-standard,
+.mat-button-toggle-group-appearance-standard {
+  border: none !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -4px rgba(0, 0, 0, 0.1) !important;
+}

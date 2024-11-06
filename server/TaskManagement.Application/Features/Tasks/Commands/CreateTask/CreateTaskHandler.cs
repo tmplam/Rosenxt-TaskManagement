@@ -16,7 +16,6 @@ public sealed class CreateTaskHandler(
         var taskItem = TaskItem.Create(
             Guid.NewGuid(),
             command.Title,
-            command.Description,
             command.RemindBeforeDeadlineByMinutes,
             command.DueDate,
             userId);

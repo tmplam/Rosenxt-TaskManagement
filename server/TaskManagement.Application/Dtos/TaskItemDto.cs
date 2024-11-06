@@ -1,8 +1,8 @@
 ﻿namespace TaskManagement.Application.Dtos;
 
 public record TaskItemDto(
+    Guid Id,
     string Title,
-    string Description,
     bool IsCompleted,
     int? RemindBeforeDeadlineByMinutes,
     DateTimeOffset DueDate,
