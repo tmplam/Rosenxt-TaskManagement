@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -8,9 +8,12 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { LoginBody } from '../../models/interfaces/auth.interface';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +29,9 @@ import { LoginBody } from '../../models/interfaces/auth.interface';
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
-  constructor(private authService: AuthService, private router: Router) {}
+  private readonly _snackBar = inject(MatSnackBar);
+  private readonly _authService = inject(AuthService);
+  private readonly _router = inject(Router);
 
   loginForm = new FormGroup({
     email: new FormControl<string>('', [Validators.required, Validators.email]),
@@ -42,13 +47,22 @@ export class LoginComponent {
         email: this.loginForm.value.email!,
         password: this.loginForm.value.password!,
       };
-      this.authService.login(loginBody).subscribe((res) => {
-        if (res.token) {
-          this.router.navigateByUrl('/tasks');
-        } else {
-          alert('sai r thang ngu');
-        }
-      });
+
+      this._authService
+        .login(loginBody)
+        .pipe(
+          catchError((error) => {
+            this._snackBar.open('Invalid credentials', 'Ok');
+            return of(null);
+          })
+        )
+        .subscribe((res) => {
+          if (res && res.token) {
+            localStorage.setItem('token', res.token);
+            this._snackBar.open('Welcome', 'Ok');
+            this._router.navigateByUrl('/tasks');
+          }
+        });
     }
   }
 }

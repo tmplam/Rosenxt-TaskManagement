@@ -47,10 +47,10 @@ public static class DependencyInjection
             options.AddDefaultPolicy(policy =>
             {
                 policy
-                    .WithOrigins("http://localhost:4200")
                     .AllowAnyMethod()
                     .AllowAnyHeader()
-                    .AllowCredentials();
+                    .AllowCredentials()
+                    .SetIsOriginAllowed(host => true);
             });
         });
 
