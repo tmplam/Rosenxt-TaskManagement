@@ -43,4 +43,8 @@ export class TasksService {
   }): Observable<any> {
     return this._http.put(`${environment.API_URL}tasks`, task);
   }
+
+  deleteTask(taskId: string): Observable<any> {
+    return this._http.delete(`${environment.API_URL}tasks/${taskId}`);
+  }
 }

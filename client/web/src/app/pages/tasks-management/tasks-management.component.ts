@@ -15,6 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateTaskDialogComponent } from '../../components/create-task-dialog/create-task-dialog.component';
 import { UpdateTaskDialogComponent } from '../../components/update-task-dialog/update-task-dialog.component';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-tasks-management',
@@ -38,6 +39,7 @@ export class TasksManagementComponent implements OnInit {
   private readonly _router = inject(Router);
   private readonly _dialog = inject(MatDialog);
   private readonly _tasksService = inject(TasksService);
+  private readonly _authService = inject(AuthService);
 
   taskList = signal<Task[]>([]);
   isFetchingTaskList = signal(false);
@@ -85,6 +87,20 @@ export class TasksManagementComponent implements OnInit {
     });
   }
 
+  deleteTask(task: Task) {
+    this._tasksService.deleteTask(task.id).subscribe((res) => {
+      if (res && res.id) {
+        const taskIndex = this.taskList().findIndex((t) => t.id === task.id);
+        if (taskIndex !== -1) {
+          this.taskList.update((tasks) =>
+            tasks.filter((t) => t.id !== task.id)
+          );
+          this._snackBar.open('Deleted task', 'OK');
+        }
+      }
+    });
+  }
+
   openAddTaskDialog() {
     const dialogRef = this._dialog.open(CreateTaskDialogComponent);
 
@@ -106,5 +122,10 @@ export class TasksManagementComponent implements OnInit {
         this.getUserTaskList(this.taskStatusControl.value);
       }
     });
+  }
+
+  logout() {
+    this._authService.removeToken();
+    this._router.navigateByUrl('/login');
   }
 }

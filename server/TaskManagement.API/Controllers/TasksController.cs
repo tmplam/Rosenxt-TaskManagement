@@ -68,6 +68,7 @@ public class TasksController(ISender _sender) : ControllerBase
     {
         var command = new DeleteTaskCommand(id);
         var result = await _sender.Send(command);
-        return NoContent();
+        var response = result.Adapt<DeleteTaskResponse>();
+        return Ok(response);
     }
 }

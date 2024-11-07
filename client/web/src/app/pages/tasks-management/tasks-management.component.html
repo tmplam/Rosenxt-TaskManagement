@@ -55,7 +55,7 @@
                 {{ task.title }}
               </span>
               <span class="text-sm block">
-                <b>Deadline:</b> {{ task.dueDate | date : "medium" }}
+                <b>Deadline:</b> {{ task.dueDate | date : "short" }}
               </span>
             </div>
           </mat-checkbox>
@@ -77,7 +77,7 @@
             <mat-icon>tag</mat-icon>
             <span>Tag friends</span>
           </button>
-          <button mat-menu-item>
+          <button mat-menu-item (click)="deleteTask(task)">
             <mat-icon>delete</mat-icon>
             <span>Delete</span>
           </button>
@@ -87,4 +87,21 @@
     </div>
     }
   </div>
+</div>
+
+<div class="fixed right-5 bottom-5">
+  <button
+    class="size-12 bg-primary rounded-full flex items-center justify-center hover:opacity-80 mb-4"
+    matTooltip="Tagged tasks"
+  >
+    <mat-icon class="text-white">notifications_active</mat-icon>
+  </button>
+
+  <button
+    class="size-12 bg-primary rounded-full flex items-center justify-center hover:opacity-80"
+    matTooltip="Logout"
+    (click)="logout()"
+  >
+    <mat-icon class="text-white">logout</mat-icon>
+  </button>
 </div>

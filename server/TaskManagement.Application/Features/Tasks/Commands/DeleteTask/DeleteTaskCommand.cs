@@ -2,4 +2,5 @@
 
 namespace TaskManagement.Application.Features.Tasks.Commands.DeleteTask;
 
-public record DeleteTaskCommand(Guid Id) : ICommand;
+public record DeleteTaskCommand(Guid Id) : ICommand<DeleteTaskResult>;
+public record DeleteTaskResult(Guid Id);
