@@ -14,6 +14,8 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
             .NotEmpty().WithMessage("Email is required")
             .EmailAddress().WithMessage("Must be a valid email");
         RuleFor(user => user.Name).NotEmpty().WithMessage("Name is required");
-        RuleFor(user => user.Password).NotEmpty().WithMessage("Password is required");
+        RuleFor(user => user.Password)
+            .MinimumLength(6).WithMessage("Password is at least 6 characters")
+            .NotEmpty().WithMessage("Password is required");
     }
 }

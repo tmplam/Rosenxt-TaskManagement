@@ -35,7 +35,7 @@ public class TasksController(ISender _sender) : ControllerBase
         return Ok(response);
     }
 
-    [HttpPost("create")]
+    [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateTaskRequest request)
     {
         var command = request.Adapt<CreateTaskCommand>();
@@ -44,7 +44,7 @@ public class TasksController(ISender _sender) : ControllerBase
         return Created($"/tasks/{response.Id}", response);
     }
 
-    [HttpPut("update")]
+    [HttpPut]
     public async Task<IActionResult> Update([FromBody] UpdateTaskRequest request)
     {
         var command = request.Adapt<UpdateTaskCommand>();

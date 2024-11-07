@@ -34,11 +34,8 @@ export class LoginComponent {
   private readonly _router = inject(Router);
 
   loginForm = new FormGroup({
-    email: new FormControl<string>('', [Validators.required, Validators.email]),
-    password: new FormControl<string>('', [
-      Validators.required,
-      Validators.minLength(6),
-    ]),
+    email: new FormControl<string>('', [Validators.required]),
+    password: new FormControl<string>('', [Validators.required]),
   });
 
   onSubmitLogin() {
@@ -52,14 +49,17 @@ export class LoginComponent {
         .login(loginBody)
         .pipe(
           catchError((error) => {
-            this._snackBar.open('Invalid credentials', 'Ok');
+            this._snackBar.open(
+              error.error.detail ?? 'Invalid credentials',
+              'OK'
+            );
             return of(null);
           })
         )
         .subscribe((res) => {
           if (res && res.token) {
             localStorage.setItem('token', res.token);
-            this._snackBar.open('Welcome', 'Ok');
+            this._snackBar.open('Welcome', 'OK');
             this._router.navigateByUrl('/tasks');
           }
         });
