@@ -24,6 +24,18 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+/* Global styles.css or styles.scss */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
 /* Custom material components */
 .custom-toggle-button-group .mat-button-toggle-checked {
   background-color: #343dff !important;

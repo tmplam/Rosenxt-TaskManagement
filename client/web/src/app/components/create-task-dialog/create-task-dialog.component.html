@@ -1,0 +1,71 @@
+<mat-dialog-content class="w-[400px] xl:w-[500px]">
+  <h6 mat-dialog-title>Add New Task</h6>
+  <form
+    class="overflow-hidden"
+    [formGroup]="createTaskForm"
+    (ngSubmit)="onSubmitCreateTask()"
+  >
+    <mat-form-field class="w-full">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" />
+      @if (createTaskForm.get('title')?.hasError('required')) {
+      <mat-error>Title is required.</mat-error>
+      }
+    </mat-form-field>
+
+    <div class="flex">
+      <mat-form-field class="mr-2">
+        <mat-label>Due date</mat-label>
+        <input
+          matInput
+          formControlName="dueDate"
+          [matDatepicker]="picker"
+          placeholder="mm/dd/yyyy"
+        />
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="picker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        @if (createTaskForm.get('dueDate')?.hasError('required')) {
+        <mat-error>Due date is required.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Due time</mat-label>
+        <input matInput formControlName="dueTime" type="time" />
+        @if (createTaskForm.get('dueTime')?.hasError('required')) {
+        <mat-error>Due time is required.</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <mat-checkbox
+      class="leading-none"
+      [checked]="isRemind()"
+      (change)="onRemindChange()"
+    >
+      Remind me
+    </mat-checkbox>
+    @if (isRemind()) {
+    <mat-form-field class="w-full">
+      <mat-label>Remind before deadline (minutes)</mat-label>
+      <input
+        matInput
+        formControlName="remindBeforeDeadlineByMinutes"
+        type="number"
+      />
+      @if (createTaskForm.get('remindBeforeDeadlineByMinutes')?.hasError('min'))
+      {
+      <mat-error>Min is 0 minute.</mat-error>
+      }
+    </mat-form-field>
+    }
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button (click)="onCancelClick()">Cancel</button>
+  <button mat-flat-button (click)="onSubmitCreateTask()">Create</button>
+</mat-dialog-actions>

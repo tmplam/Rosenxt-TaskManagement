@@ -22,6 +22,7 @@ public class TaskRepository(ApplicationDbContext _dbContext) : ITaskRepository
         {
             tasks = tasks.Where(predicate);
         }
+        tasks = tasks.OrderByDescending(task => task.CreatedAt);
         return await tasks.ToListAsync();
     }
 

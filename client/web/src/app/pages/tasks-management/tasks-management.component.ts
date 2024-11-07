@@ -12,6 +12,8 @@ import { Task } from '../../models/interfaces/task.interface';
 import { TasksService } from '../../services/tasks.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateTaskDialogComponent } from '../../components/create-task-dialog/create-task-dialog.component';
 
 @Component({
   selector: 'app-tasks-management',
@@ -33,6 +35,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class TasksManagementComponent implements OnInit {
   private readonly _snackBar = inject(MatSnackBar);
   private readonly _router = inject(Router);
+  private readonly _dialog = inject(MatDialog);
   private readonly _tasksService = inject(TasksService);
 
   taskList = signal<Task[]>([]);
@@ -48,7 +51,7 @@ export class TasksManagementComponent implements OnInit {
   getUserTaskList(statusValue?: string | null) {
     let completeStatus: boolean | null = null;
     if (statusValue == 'completed') completeStatus = true;
-    if (statusValue == 'incompleted') completeStatus = false;
+    if (statusValue == 'incomplete') completeStatus = false;
 
     this._tasksService.getUserTasks(completeStatus).subscribe((res) => {
       if (res) {
@@ -57,7 +60,7 @@ export class TasksManagementComponent implements OnInit {
     });
   }
 
-  onToggleCompleteTask(task: Task) {
+  toggleCompleteTask(task: Task) {
     this._tasksService.toggleCompleteTask(task.id).subscribe((res) => {
       if (res && res.id) {
         const taskIndex = this.taskList().findIndex((t) => t.id === task.id);
@@ -74,6 +77,16 @@ export class TasksManagementComponent implements OnInit {
           }
         }
         this._snackBar.open('Update successfully', 'OK');
+      }
+    });
+  }
+
+  openAddTaskDialog() {
+    const dialogRef = this._dialog.open(CreateTaskDialogComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getUserTaskList(this.taskStatusControl.value);
       }
     });
   }

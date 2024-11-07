@@ -26,4 +26,12 @@ export class TasksService {
       {}
     );
   }
+
+  createTask(task: {
+    title: string;
+    dueDate: Date;
+    remindBeforeDeadlineByMinutes?: number | null;
+  }): Observable<any> {
+    return this._http.post(`${environment.API_URL}tasks`, task);
+  }
 }
