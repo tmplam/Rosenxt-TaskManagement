@@ -38,7 +38,7 @@ input[type="number"] {
 
 /* Custom material components */
 .custom-toggle-button-group .mat-button-toggle-checked {
-  background-color: #343dff !important;
+  background-color: #005cbb !important;
   color: #fff !important;
 }
 

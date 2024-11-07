@@ -18,12 +18,6 @@ import { MatInputModule } from '@angular/material/input';
 import { TasksService } from '../../services/tasks.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-// export interface CreateTaskDialogData {
-//   title: string;
-//   dueDate: Date;
-//   remindBeforeDeadlineByMinutes?: number;
-// }
-
 @Component({
   selector: 'app-create-task-dialog',
   standalone: true,
@@ -47,6 +41,7 @@ export class CreateTaskDialogComponent {
   // readonly data = inject<CreateTaskDialogData>(MAT_DIALOG_DATA);
 
   isRemind = signal(false);
+  isSubmitting = signal(false);
 
   createTaskForm = new FormGroup({
     title: new FormControl<string>('', [Validators.required]),
@@ -63,6 +58,7 @@ export class CreateTaskDialogComponent {
 
   onSubmitCreateTask() {
     this.createTaskForm.markAllAsTouched();
+
     if (this.createTaskForm.valid) {
       const dueDate = this.createTaskForm.value.dueDate;
       const [hour, min] = this.createTaskForm.value.dueTime!.split(':');
@@ -71,15 +67,21 @@ export class CreateTaskDialogComponent {
       const addTaskBody = {
         title: this.createTaskForm.value.title!,
         dueDate: dueDate!,
-        remindBeforeDeadlineByMinutes:
-          this.createTaskForm.value.remindBeforeDeadlineByMinutes,
+        remindBeforeDeadlineByMinutes: this.isRemind()
+          ? this.createTaskForm.value.remindBeforeDeadlineByMinutes
+          : null,
       };
+
+      this.createTaskForm.disable();
+      this.isSubmitting.set(true);
 
       this._tasksService.createTask(addTaskBody).subscribe((res) => {
         if (res && res.id) {
           this._snackBar.open('Add task successfully', 'OK');
           this._dialogRef.close(res);
         }
+        this.createTaskForm.enable();
+        this.isSubmitting.set(false);
       });
     }
   }

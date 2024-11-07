@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -41,6 +41,7 @@ export class SignUpComponent {
       Validators.minLength(6),
     ]),
   });
+  isSubmitting = signal(false);
 
   passwordMatchValidator(g: FormGroup) {
     return g.get('password')?.value === g.get('confirmPassword')?.value
@@ -55,6 +56,9 @@ export class SignUpComponent {
         name: this.signUpForm.value.name!,
         password: this.signUpForm.value.password!,
       };
+
+      this.signUpForm.disable();
+      this.isSubmitting.set(true);
 
       this._authService
         .signUp(signUpBody)
@@ -72,6 +76,8 @@ export class SignUpComponent {
             this._snackBar.open('Sign up successfully', 'OK');
             this._router.navigateByUrl('/login');
           }
+          this.signUpForm.enable();
+          this.isSubmitting.set(false);
         });
     }
   }

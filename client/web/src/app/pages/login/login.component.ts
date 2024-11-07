@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -37,6 +37,7 @@ export class LoginComponent {
     email: new FormControl<string>('', [Validators.required]),
     password: new FormControl<string>('', [Validators.required]),
   });
+  isSubmitting = signal(false);
 
   onSubmitLogin() {
     if (this.loginForm.valid) {
@@ -44,6 +45,9 @@ export class LoginComponent {
         email: this.loginForm.value.email!,
         password: this.loginForm.value.password!,
       };
+
+      this.loginForm.disable();
+      this.isSubmitting.set(true);
 
       this._authService
         .login(loginBody)
@@ -62,6 +66,8 @@ export class LoginComponent {
             this._snackBar.open('Welcome', 'OK');
             this._router.navigateByUrl('/tasks');
           }
+          this.loginForm.enable();
+          this.isSubmitting.set(false);
         });
     }
   }

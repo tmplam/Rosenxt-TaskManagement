@@ -43,6 +43,7 @@
 
     <mat-checkbox
       class="leading-none"
+      [disabled]="isSubmitting()"
       [checked]="isRemind()"
       (change)="onRemindChange()"
     >
@@ -66,6 +67,25 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-  <button mat-raised-button (click)="onCancelClick()">Cancel</button>
-  <button mat-flat-button (click)="onSubmitCreateTask()">Create</button>
+  <button
+    class="bg-slate-300 shadow-lg px-5 py-2.5 mr-2 text-slate-600 rounded-full font-medium text-sm cursor-pointer hover:opacity-90 disabled:opacity-70 disabled:cursor-default flex justify-center items-center"
+    type="submit"
+    [disabled]="isSubmitting()"
+    (click)="onCancelClick()"
+  >
+    Cancel
+  </button>
+  <button
+    class="bg-primary shadow-lg px-5 py-2.5 text-white rounded-full font-medium text-sm cursor-pointer hover:opacity-90 disabled:opacity-70 disabled:cursor-default flex justify-center items-center"
+    type="submit"
+    [disabled]="isSubmitting()"
+    (click)="onSubmitCreateTask()"
+  >
+    <span>Create</span>
+    @if (isSubmitting()) {
+    <div
+      class="spinner-border animate-spin inline-block w-5 h-5 border-2 rounded-full border-r-transparent ml-2"
+    ></div>
+    }
+  </button>
 </mat-dialog-actions>

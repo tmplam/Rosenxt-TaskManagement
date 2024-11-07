@@ -25,10 +25,16 @@
       </mat-form-field>
 
       <button
-        class="w-full bg-primary text-white rounded-md cursor-pointer py-3 hover:opacity-80"
+        class="w-full bg-primary text-white rounded-md cursor-pointer py-3 hover:opacity-90 disabled:opacity-70 disabled:cursor-default flex justify-center items-center"
         type="submit"
+        [disabled]="isSubmitting()"
       >
-        Login
+        <span>Login</span>
+        @if (isSubmitting()) {
+        <div
+          class="spinner-border animate-spin inline-block w-6 h-6 border-4 rounded-full border-r-transparent ml-2"
+        ></div>
+        }
       </button>
     </form>
 

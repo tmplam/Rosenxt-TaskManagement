@@ -14,6 +14,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateTaskDialogComponent } from '../../components/create-task-dialog/create-task-dialog.component';
+import { UpdateTaskDialogComponent } from '../../components/update-task-dialog/update-task-dialog.component';
 
 @Component({
   selector: 'app-tasks-management',
@@ -39,6 +40,7 @@ export class TasksManagementComponent implements OnInit {
   private readonly _tasksService = inject(TasksService);
 
   taskList = signal<Task[]>([]);
+  isFetchingTaskList = signal(false);
   taskStatusControl = new FormControl('all');
 
   ngOnInit(): void {
@@ -53,10 +55,12 @@ export class TasksManagementComponent implements OnInit {
     if (statusValue == 'completed') completeStatus = true;
     if (statusValue == 'incomplete') completeStatus = false;
 
+    this.isFetchingTaskList.set(true);
     this._tasksService.getUserTasks(completeStatus).subscribe((res) => {
       if (res) {
         this.taskList.set(res.tasks);
       }
+      this.isFetchingTaskList.set(false);
     });
   }
 
@@ -75,14 +79,27 @@ export class TasksManagementComponent implements OnInit {
               return tasks;
             });
           }
+          this._snackBar.open('Update successfully', 'OK');
         }
-        this._snackBar.open('Update successfully', 'OK');
       }
     });
   }
 
   openAddTaskDialog() {
     const dialogRef = this._dialog.open(CreateTaskDialogComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getUserTaskList(this.taskStatusControl.value);
+      }
+    });
+  }
+
+  openUpdateTaskDialog(task: Task) {
+    task.dueDate = new Date(task.dueDate);
+    const dialogRef = this._dialog.open(UpdateTaskDialogComponent, {
+      data: task,
+    });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {

@@ -34,4 +34,13 @@ export class TasksService {
   }): Observable<any> {
     return this._http.post(`${environment.API_URL}tasks`, task);
   }
+
+  updateTask(task: {
+    id: string;
+    title: string;
+    dueDate: Date;
+    remindBeforeDeadlineByMinutes?: number | null;
+  }): Observable<any> {
+    return this._http.put(`${environment.API_URL}tasks`, task);
+  }
 }
