@@ -15,6 +15,15 @@ export class TasksService {
     if (isCompleted != null) {
       query = `?isCompleted=${isCompleted}`;
     }
-    return this._http.get<{ tasks: Task[] }>(`${environment.API_URL}tasks${query}`);
+    return this._http.get<{ tasks: Task[] }>(
+      `${environment.API_URL}tasks${query}`
+    );
+  }
+
+  toggleCompleteTask(taskId: string): Observable<any> {
+    return this._http.patch(
+      `${environment.API_URL}tasks/${taskId}/toggle-complete`,
+      {}
+    );
   }
 }

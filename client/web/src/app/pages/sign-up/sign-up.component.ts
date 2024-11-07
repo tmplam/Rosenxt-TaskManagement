@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { LoginBody, SignUpBody } from '../../models/interfaces/auth.interface';
+import { SignUpBody } from '../../models/interfaces/auth.interface';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 

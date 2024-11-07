@@ -28,8 +28,15 @@
         class="bg-white rounded-lg px-2 py-3 mt-2 first:mt-0 shadow-lg flex items-center justify-between"
       >
         <div class="flex items-center">
-          <mat-checkbox>
-            <div class="ml-1">
+          <mat-checkbox
+            [checked]="task.isCompleted"
+            (change)="onToggleCompleteTask(task)"
+          >
+            <div
+              class="ml-1 {{
+                task.isCompleted ? 'line-through text-slate-500' : ''
+              }}"
+            >
               <span class="cursor-pointer text-base block">
                 {{ task.title }}
               </span>
