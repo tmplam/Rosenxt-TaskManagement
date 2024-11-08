@@ -1,6 +1,6 @@
 ﻿using TaskManagement.Domain.Entities;
 
-namespace TaskManagement.Domain.Repositories;
+namespace TaskManagement.Application.Repositories;
 
 public interface IUserRepository
 {

@@ -4,7 +4,7 @@ namespace TaskManagement.Application.Abstractions;
 
 public interface IEmailService
 {
-    Task SendRemindEmailAsync(User user, TaskItem task, CancellationToken cancellationToken = default);
+    Task SendRemindEmailAsync(User user, List<TaskItem> tasks, CancellationToken cancellationToken = default);
 
-    Task SendTagEmailAsync(User user, TaskItem task, CancellationToken cancellationToken = default);
+    Task SendTagEmailAsync(TaskItem task, List<User> users, CancellationToken cancellationToken = default);
 }

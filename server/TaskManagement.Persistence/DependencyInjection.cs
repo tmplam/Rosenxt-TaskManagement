@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TaskManagement.Domain.Repositories;
+using TaskManagement.Application.Repositories;
 using TaskManagement.Persistence.Interceptors;
 using TaskManagement.Persistence.Repositories;
 

@@ -3,7 +3,7 @@ using TaskManagement.Application.Abstractions.Messagings;
 using TaskManagement.Application.Dtos;
 using TaskManagement.Application.Exceptions;
 using TaskManagement.Domain.Entities;
-using TaskManagement.Domain.Repositories;
+using TaskManagement.Application.Repositories;
 
 namespace TaskManagement.Application.Features.Tasks.Queries.GetTaskById;
 

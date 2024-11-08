@@ -1,4 +1,4 @@
-﻿namespace TaskManagement.Domain.Repositories;
+﻿namespace TaskManagement.Application.Repositories;
 
 public interface IUnitOfWork
 {

@@ -2,7 +2,7 @@
 using TaskManagement.Application.Abstractions;
 using TaskManagement.Application.Abstractions.Messagings;
 using TaskManagement.Application.Dtos;
-using TaskManagement.Domain.Repositories;
+using TaskManagement.Application.Repositories;
 
 namespace TaskManagement.Application.Features.Tasks.Queries.GetTasks;
 

@@ -54,6 +54,7 @@ public static class DependencyInjection
             });
         });
 
+        services.ConfigureOptions<EmailOptionsSetup>();
         // Configure Jwt
         services.ConfigureOptions<JwtOptionsSetup>();
         services.ConfigureOptions<JwtBearerOptionsSetup>();

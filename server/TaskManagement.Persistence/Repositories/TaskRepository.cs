@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using TaskManagement.Domain.Entities;
-using TaskManagement.Domain.Repositories;
+using TaskManagement.Application.Repositories;
 
 namespace TaskManagement.Persistence.Repositories;
 
@@ -24,6 +24,27 @@ public class TaskRepository(ApplicationDbContext _dbContext) : ITaskRepository
         }
         tasks = tasks.OrderByDescending(task => task.CreatedAt);
         return await tasks.ToListAsync();
+    }
+
+    public async Task<List<(User User, List<TaskItem> DueTasks)>> GetAllDueTasksAsync()
+    {
+        var users = await _dbContext.Set<User>()
+            .Include(user => user.Tasks)
+            .Select(user => new
+            {
+                User = user,
+                DueTasks = user.Tasks
+                    .Where(task =>
+                        !task.IsCompleted &&
+                        !task.IsNotified &&
+                        task.RemindBeforeDeadlineByMinutes != null &&
+                        task.DueDate <= DateTimeOffset.UtcNow.AddMinutes(task.RemindBeforeDeadlineByMinutes ?? 0))
+                    .ToList()
+            })
+            .Where(u => u.DueTasks.Any())
+            .ToListAsync();
+
+        return users.Select(u => (u.User, u.DueTasks)).ToList();
     }
 
     public async Task<TaskItem> AddAsync(TaskItem task)

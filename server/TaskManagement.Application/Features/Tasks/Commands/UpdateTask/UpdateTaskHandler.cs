@@ -2,7 +2,7 @@
 using TaskManagement.Application.Abstractions.Messagings;
 using TaskManagement.Application.Exceptions;
 using TaskManagement.Domain.Entities;
-using TaskManagement.Domain.Repositories;
+using TaskManagement.Application.Repositories;
 
 namespace TaskManagement.Application.Features.Tasks.Commands.UpdateTask;
 
@@ -22,6 +22,7 @@ public sealed class UpdateTaskHandler(
         task.Title = command.Title;
         task.RemindBeforeDeadlineByMinutes = command.RemindBeforeDeadlineByMinutes;
         task.DueDate = command.DueDate;
+        task.IsNotified = false;
 
         task = _taskRepository.Update(task);
         await _unitOfWork.SaveChangesAsync();

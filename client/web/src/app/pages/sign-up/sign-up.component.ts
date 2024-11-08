@@ -1,19 +1,19 @@
 import { Component, inject, signal } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { SignUpBody } from '../../models/interfaces/auth.interface';
-import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
 
 @Component({
   selector: 'app-sign-up',

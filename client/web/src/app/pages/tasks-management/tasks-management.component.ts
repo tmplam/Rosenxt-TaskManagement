@@ -1,4 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,16 +9,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
-import { Router } from '@angular/router';
-import { DatePipe } from '@angular/common';
-import { Task } from '../../models/interfaces/task.interface';
-import { TasksService } from '../../services/tasks.service';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateTaskDialogComponent } from '../../components/create-task-dialog/create-task-dialog.component';
 import { UpdateTaskDialogComponent } from '../../components/update-task-dialog/update-task-dialog.component';
+import { TasksService } from '../../services/tasks.service';
 import { AuthService } from '../../services/auth.service';
+import { Task } from '../../models/interfaces/task.interface';
 
 @Component({
   selector: 'app-tasks-management',
