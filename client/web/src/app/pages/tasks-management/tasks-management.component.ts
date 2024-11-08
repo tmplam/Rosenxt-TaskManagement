@@ -16,6 +16,9 @@ import { UpdateTaskDialogComponent } from '../../components/update-task-dialog/u
 import { TasksService } from '../../services/tasks.service';
 import { AuthService } from '../../services/auth.service';
 import { Task } from '../../models/interfaces/task.interface';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { TaggedTasksBottomSheetComponent } from '../../components/tagged-tasks-bottom-sheet/tagged-tasks-bottom-sheet.component';
+import { TagFriendsDialogComponent } from '../../components/tag-friends-dialog/tag-friends-dialog.component';
 
 @Component({
   selector: 'app-tasks-management',
@@ -38,6 +41,7 @@ export class TasksManagementComponent implements OnInit {
   private readonly _snackBar = inject(MatSnackBar);
   private readonly _router = inject(Router);
   private readonly _dialog = inject(MatDialog);
+  private readonly _bottomSheet = inject(MatBottomSheet);
   private readonly _tasksService = inject(TasksService);
   private readonly _authService = inject(AuthService);
 
@@ -103,7 +107,6 @@ export class TasksManagementComponent implements OnInit {
 
   openAddTaskDialog() {
     const dialogRef = this._dialog.open(CreateTaskDialogComponent);
-
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.getUserTaskList(this.taskStatusControl.value);
@@ -122,6 +125,18 @@ export class TasksManagementComponent implements OnInit {
         this.getUserTaskList(this.taskStatusControl.value);
       }
     });
+  }
+
+  openTagFriendsDialog(task: Task) {
+    const dialogRef = this._dialog.open(TagFriendsDialogComponent, {
+      data: task,
+    });
+  }
+
+  openTaggedTasksBottomSheet() {
+    const bottomSheetRef = this._bottomSheet.open(
+      TaggedTasksBottomSheetComponent
+    );
   }
 
   logout() {

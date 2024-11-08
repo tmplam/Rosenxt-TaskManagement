@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using TaskManagement.API.Models.TaskModels;
 using TaskManagement.Application.Features.Tasks.Commands.CreateTask;
 using TaskManagement.Application.Features.Tasks.Commands.DeleteTask;
+using TaskManagement.Application.Features.Tasks.Commands.TagUsersToTask;
 using TaskManagement.Application.Features.Tasks.Commands.ToggleCompleteTask;
 using TaskManagement.Application.Features.Tasks.Commands.UpdateTask;
 using TaskManagement.Application.Features.Tasks.Queries.GetTaskById;
@@ -69,6 +70,15 @@ public class TasksController(ISender _sender) : ControllerBase
         var command = new DeleteTaskCommand(id);
         var result = await _sender.Send(command);
         var response = result.Adapt<DeleteTaskResponse>();
+        return Ok(response);
+    }
+
+    [HttpPost("tag-users")]
+    public async Task<IActionResult> TagUsers([FromBody] TagUsersToTaskRequest request)
+    {
+        var command = request.Adapt<TagUsersToTaskCommand>();
+        var result = await _sender.Send(command);
+        var response = result.Adapt<TagUsersToTaskResponse>();
         return Ok(response);
     }
 }

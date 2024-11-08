@@ -50,13 +50,40 @@ public class EmailService : IEmailService
         await _sendGridClient.SendEmailAsync(msg, cancellationToken);
     }
 
-    public Task SendTagEmailAsync(TaskItem task, List<User> users, CancellationToken cancellationToken = default)
+    public async Task SendTagEmailAsync(TaskItem task, User user, CancellationToken cancellationToken = default)
     {
         if (_sendGridClient == null)
         {
             throw new Exception("The SendGrid key is not provided");
         }
+        EmailAddress fromAddress = new(_emailOptions.SenderEmail, _emailOptions.SenderName);
+        EmailAddress toAddress = new(user.Email);
 
-        throw new NotImplementedException();
+        var subject = "Task Tagged: Someone Tagged You To A Task";
+
+        var htmlContent = $"""
+            <p>Hi {user.Name},</p>
+            <p>Someone has tagged you to a task:</p>
+            <ul>
+                <li><strong>{task.Title}</strong> - Due Date: {task.DueDate}</li>
+            </ul>
+            <p>Please check on the website for more details.</p>
+            <p>Best regards,<br>Your Task Management App Team</p>
+            """;
+
+        var plainTextContent = $"""
+            Hi {user.Name}, 
+
+            Someone has tagged you to a task:
+            {task.Title} - Due Date: {task.DueDate}
+            
+            Please check on the website for more details.
+            
+            Best regards,
+            Your Task Management App Team
+            """;
+
+        var msg = MailHelper.CreateSingleEmail(fromAddress, toAddress, subject, plainTextContent, htmlContent);
+        await _sendGridClient.SendEmailAsync(msg, cancellationToken);
     }
 }

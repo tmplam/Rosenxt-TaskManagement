@@ -6,5 +6,5 @@ public interface IEmailService
 {
     Task SendRemindEmailAsync(User user, List<TaskItem> tasks, CancellationToken cancellationToken = default);
 
-    Task SendTagEmailAsync(TaskItem task, List<User> users, CancellationToken cancellationToken = default);
+    Task SendTagEmailAsync(TaskItem task, User user, CancellationToken cancellationToken = default);
 }

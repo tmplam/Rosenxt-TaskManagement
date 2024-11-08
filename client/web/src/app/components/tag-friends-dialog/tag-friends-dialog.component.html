@@ -1,0 +1,72 @@
+<mat-dialog-content class="w-[400px] xl:w-[500px]">
+  <h6 mat-dialog-title>Tag Friends</h6>
+  <span class="block mb-2"><b>Task:</b> {{ data.title }}</span>
+  <div>
+    <mat-form-field class="w-full">
+      <mat-label>Search email</mat-label>
+      <input
+        type="text"
+        aria-label="Search email"
+        matInput
+        [formControl]="searchEmailKeyword"
+        [matAutocomplete]="userEmailList"
+      />
+      <mat-autocomplete #userEmailList>
+        <div *ngIf="emailSearchResult | async as result">
+          @if (result.isLoading) {
+          <mat-option disabled class="text-center">
+            <div class="flex justify-center items-center">
+              <div
+                class="spinner-border animate-spin inline-block w-5 h-5 border-2 rounded-full border-primary border-r-transparent ml-2"
+              ></div>
+            </div>
+          </mat-option>
+          } @else { @for (email of result.emailList; track email) {
+          <mat-option [value]="email" (click)="onEmailSelect(email)">
+            {{ email }}
+          </mat-option>
+          } }
+        </div>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+
+  <div>
+    @for (email of selectedEmails(); track email) {
+    <div
+      class="px-2 py-1 first:mt-0 rounded-lg flex justify-between items-center hover:bg-slate-200"
+    >
+      <span class="block">{{ email }}</span>
+      <mat-icon
+        class="text-danger cursor-pointer"
+        (click)="onRemoveEmail(email)"
+        >close</mat-icon
+      >
+    </div>
+    }
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button
+    class="bg-slate-300 shadow-lg px-5 py-2.5 mr-2 text-slate-600 rounded-full font-medium text-sm cursor-pointer hover:opacity-90 disabled:opacity-70 disabled:cursor-default flex justify-center items-center"
+    type="submit"
+    [disabled]="isSubmitting()"
+    (click)="onCancelClick()"
+  >
+    Cancel
+  </button>
+  <button
+    class="bg-primary shadow-lg px-5 py-2.5 text-white rounded-full font-medium text-sm cursor-pointer hover:opacity-90 disabled:opacity-70 disabled:cursor-default flex justify-center items-center"
+    type="submit"
+    [disabled]="isSubmitting() || selectedEmails().length == 0"
+    (click)="onSubmitTag()"
+  >
+    <span>Submit</span>
+    @if (isSubmitting()) {
+    <div
+      class="spinner-border animate-spin inline-block w-5 h-5 border-2 rounded-full border-r-transparent ml-2"
+    ></div>
+    }
+  </button>
+</mat-dialog-actions>

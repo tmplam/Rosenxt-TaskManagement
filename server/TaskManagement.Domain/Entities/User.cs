@@ -1,4 +1,5 @@
-﻿using TaskManagement.Domain.Primitives;
+﻿using TaskManagement.Domain.DomainEvents;
+using TaskManagement.Domain.Primitives;
 
 namespace TaskManagement.Domain.Entities;
 

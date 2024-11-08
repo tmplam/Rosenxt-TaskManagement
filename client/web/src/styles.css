@@ -4,12 +4,14 @@
 @tailwind utilities;
 
 @layer utilities {
-  .scrollbar-hide {
+  .scrollbar-hide,
+  .mat-bottom-sheet-container {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
 
-  .scrollbar-hide::-webkit-scrollbar {
+  .scrollbar-hide::-webkit-scrollbar,
+  .mat-bottom-sheet-container::-webkit-scrollbar {
     display: none;
   }
 }
