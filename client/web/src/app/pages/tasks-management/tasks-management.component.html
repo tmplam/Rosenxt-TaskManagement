@@ -43,6 +43,7 @@
       >
         <div class="flex items-center">
           <mat-checkbox
+            [disabled]="isHandlingUpdateList().includes(task.id)"
             [checked]="task.isCompleted"
             (change)="toggleCompleteTask(task)"
           >
@@ -63,6 +64,7 @@
 
         <button
           mat-icon-button
+          [disabled]="isHandlingUpdateList().includes(task.id)"
           [matMenuTriggerFor]="menu"
           aria-label="Example icon-button with a menu"
         >

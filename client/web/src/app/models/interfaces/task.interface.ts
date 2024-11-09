@@ -7,5 +7,4 @@ export interface Task {
   remindBeforeDeadlineByMinutes?: number;
   user?: User;
   dueDate: Date;
-  modifiedAt: Date;
 }

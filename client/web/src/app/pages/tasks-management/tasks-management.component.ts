@@ -17,7 +17,10 @@ import { TasksService } from '../../services/tasks.service';
 import { AuthService } from '../../services/auth.service';
 import { Task } from '../../models/interfaces/task.interface';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { TaggedTasksBottomSheetComponent } from '../../components/tagged-tasks-bottom-sheet/tagged-tasks-bottom-sheet.component';
+import {
+  TaggedTasksBottomSheetComponent,
+  TaggedTasksBottomSheetDataService,
+} from '../../components/tagged-tasks-bottom-sheet/tagged-tasks-bottom-sheet.component';
 import { TagFriendsDialogComponent } from '../../components/tag-friends-dialog/tag-friends-dialog.component';
 
 @Component({
@@ -44,9 +47,13 @@ export class TasksManagementComponent implements OnInit {
   private readonly _bottomSheet = inject(MatBottomSheet);
   private readonly _tasksService = inject(TasksService);
   private readonly _authService = inject(AuthService);
+  private readonly _taggedTasksBottomSheetDataService = inject(
+    TaggedTasksBottomSheetDataService
+  );
 
   taskList = signal<Task[]>([]);
   isFetchingTaskList = signal(false);
+  isHandlingUpdateList = signal<string[]>([]);
   taskStatusControl = new FormControl('all');
 
   ngOnInit(): void {
@@ -54,6 +61,12 @@ export class TasksManagementComponent implements OnInit {
     this.taskStatusControl.valueChanges.subscribe((newStatus) =>
       this.getUserTaskList(newStatus)
     );
+    this._taggedTasksBottomSheetDataService.data$.subscribe((data) => {
+      this.taskList.update((prev) => {
+        prev.unshift(data);
+        return prev;
+      });
+    });
   }
 
   getUserTaskList(statusValue?: string | null) {
@@ -71,6 +84,10 @@ export class TasksManagementComponent implements OnInit {
   }
 
   toggleCompleteTask(task: Task) {
+    this.isHandlingUpdateList.update((prev) => {
+      prev.push(task.id);
+      return prev;
+    });
     this._tasksService.toggleCompleteTask(task.id).subscribe((res) => {
       if (res && res.id) {
         const taskIndex = this.taskList().findIndex((t) => t.id === task.id);
@@ -85,6 +102,9 @@ export class TasksManagementComponent implements OnInit {
               return tasks;
             });
           }
+          this.isHandlingUpdateList.update((prev) =>
+            prev.filter((id) => task.id != id)
+          );
           this._snackBar.open('Update successfully', 'OK');
         }
       }
@@ -92,12 +112,19 @@ export class TasksManagementComponent implements OnInit {
   }
 
   deleteTask(task: Task) {
+    this.isHandlingUpdateList.update((prev) => {
+      prev.push(task.id);
+      return prev;
+    });
     this._tasksService.deleteTask(task.id).subscribe((res) => {
       if (res && res.id) {
         const taskIndex = this.taskList().findIndex((t) => t.id === task.id);
         if (taskIndex !== -1) {
           this.taskList.update((tasks) =>
             tasks.filter((t) => t.id !== task.id)
+          );
+          this.isHandlingUpdateList.update((prev) =>
+            prev.filter((id) => task.id != id)
           );
           this._snackBar.open('Deleted task', 'OK');
         }
@@ -137,6 +164,8 @@ export class TasksManagementComponent implements OnInit {
     const bottomSheetRef = this._bottomSheet.open(
       TaggedTasksBottomSheetComponent
     );
+
+    bottomSheetRef.afterDismissed().subscribe((result) => {});
   }
 
   logout() {

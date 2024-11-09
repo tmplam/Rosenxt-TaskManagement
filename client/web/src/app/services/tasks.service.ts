@@ -57,4 +57,12 @@ export class TasksService {
   tagUsersToTask(data: { taskId: string; emails: string[] }): Observable<any> {
     return this._http.post(`${environment.API_URL}tasks/tag-users`, data);
   }
+
+  acceptTaggedTask(data: { taskId: string }): Observable<any> {
+    return this._http.post(`${environment.API_URL}tasks/tagged/accept`, data);
+  }
+
+  declineTaggedTask(data: { taskId: string }): Observable<any> {
+    return this._http.post(`${environment.API_URL}tasks/tagged/decline`, data);
+  }
 }

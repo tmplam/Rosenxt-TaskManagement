@@ -11,7 +11,11 @@
   </div>
   } @else { @for (task of taggedTasks(); track task.id) {
   <div
-    class="py-2 px-4 rounded-3xl bg-slate-200 hover:bg-slate-300 flex justify-between items-center mb-3 last:mb-0"
+    class="py-2 px-4 rounded-3xl bg-slate-200 {{
+      isSubmittingList().includes(task.id)
+        ? 'text-slate-500'
+        : 'hover:bg-slate-300'
+    }} flex justify-between items-center mb-3 last:mb-0"
   >
     <div>
       <span class="line-clamp-1">{{ task.title }}</span>
@@ -23,12 +27,30 @@
       </span>
     </div>
     <div>
-      <button mat-icon-button class="mr-1" matTooltip="Accept">
+      @if (isSubmittingList().includes(task.id)) {
+      <div
+        class="spinner-border animate-spin inline-block w-7 h-7 border-2 border-slate-400 rounded-full border-r-transparent"
+      ></div>
+      } @else {
+
+      <button
+        [disabled]="isSubmittingList().includes(task.id)"
+        mat-icon-button
+        class="mr-1"
+        matTooltip="Accept"
+        (click)="acceptTaggedTask(task)"
+      >
         <mat-icon class="text-green-600">check</mat-icon>
       </button>
-      <button mat-icon-button matTooltip="Decline">
+      <button
+        [disabled]="isSubmittingList().includes(task.id)"
+        mat-icon-button
+        matTooltip="Decline"
+        (click)="declineTaggedTask(task)"
+      >
         <mat-icon class="text-danger">close</mat-icon>
       </button>
+      }
     </div>
   </div>
   } }

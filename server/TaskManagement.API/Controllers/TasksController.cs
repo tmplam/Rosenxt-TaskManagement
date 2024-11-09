@@ -3,7 +3,9 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagement.API.Models.TaskModels;
+using TaskManagement.Application.Features.Tasks.Commands.AcceptTaggedTask;
 using TaskManagement.Application.Features.Tasks.Commands.CreateTask;
+using TaskManagement.Application.Features.Tasks.Commands.DeclineTaggedTask;
 using TaskManagement.Application.Features.Tasks.Commands.DeleteTask;
 using TaskManagement.Application.Features.Tasks.Commands.TagUsersToTask;
 using TaskManagement.Application.Features.Tasks.Commands.ToggleCompleteTask;
@@ -86,10 +88,29 @@ public class TasksController(ISender _sender) : ControllerBase
     [HttpGet("tagged")]
     public async Task<IActionResult> GetTaggedTasks()
     {
-        Thread.Sleep(1000);
         var query = new GetTaggedTasksQuery();
         var result = await _sender.Send(query);
         var response = result.Adapt<GetTaggedTasksResponse>();
+        return Ok(response);
+    }
+
+    [HttpPost("tagged/decline")]
+    public async Task<IActionResult> DeclineTaggedTask([FromBody] DeclineTaggedTaskRequest request)
+    {
+        Thread.Sleep(1000);
+        var command = request.Adapt<DeclineTaggedTaskCommand>();
+        var result = await _sender.Send(command);
+        var response = result.Adapt<DeclineTaggedTaskResponse>();
+        return Ok(response);
+    }
+
+    [HttpPost("tagged/accept")]
+    public async Task<IActionResult> AcceptTaggedTask([FromBody] AcceptTaggedTaskRequest request)
+    {
+        Thread.Sleep(1000);
+        var command = request.Adapt<AcceptTaggedTaskCommand>();
+        var result = await _sender.Send(command);
+        var response = result.Adapt<AcceptTaggedTaskResponse>();
         return Ok(response);
     }
 }
