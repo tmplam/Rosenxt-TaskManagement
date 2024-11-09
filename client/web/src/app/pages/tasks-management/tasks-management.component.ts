@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -22,6 +22,7 @@ import {
   TaggedTasksBottomSheetDataService,
 } from '../../components/tagged-tasks-bottom-sheet/tagged-tasks-bottom-sheet.component';
 import { TagFriendsDialogComponent } from '../../components/tag-friends-dialog/tag-friends-dialog.component';
+import { interval, Subscription, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-tasks-management',
@@ -40,7 +41,7 @@ import { TagFriendsDialogComponent } from '../../components/tag-friends-dialog/t
   templateUrl: './tasks-management.component.html',
   styleUrl: './tasks-management.component.css',
 })
-export class TasksManagementComponent implements OnInit {
+export class TasksManagementComponent implements OnInit, OnDestroy {
   private readonly _snackBar = inject(MatSnackBar);
   private readonly _router = inject(Router);
   private readonly _dialog = inject(MatDialog);
@@ -50,14 +51,18 @@ export class TasksManagementComponent implements OnInit {
   private readonly _taggedTasksBottomSheetDataService = inject(
     TaggedTasksBottomSheetDataService
   );
+  private pollingSubscription?: Subscription = undefined;
 
   taskList = signal<Task[]>([]);
   isFetchingTaskList = signal(false);
   isHandlingUpdateList = signal<string[]>([]);
   taskStatusControl = new FormControl('all');
+  hasTaggedTasks = signal(false);
 
   ngOnInit(): void {
     this.getUserTaskList();
+    this.getTaggedTasksCount();
+
     this.taskStatusControl.valueChanges.subscribe((newStatus) =>
       this.getUserTaskList(newStatus)
     );
@@ -67,6 +72,20 @@ export class TasksManagementComponent implements OnInit {
         return prev;
       });
     });
+
+    this.pollingSubscription = interval(15000)
+      .pipe(switchMap(() => this._tasksService.getTaggedTasksCount()))
+      .subscribe((res) => {
+        if (res && res.count !== undefined) {
+          this.hasTaggedTasks.set(res.count > 0);
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    if (this.pollingSubscription) {
+      this.pollingSubscription.unsubscribe();
+    }
   }
 
   getUserTaskList(statusValue?: string | null) {
@@ -165,7 +184,17 @@ export class TasksManagementComponent implements OnInit {
       TaggedTasksBottomSheetComponent
     );
 
-    bottomSheetRef.afterDismissed().subscribe((result) => {});
+    bottomSheetRef.backdropClick().subscribe((event) => {
+      this.getTaggedTasksCount();
+    });
+  }
+
+  getTaggedTasksCount() {
+    this._tasksService.getTaggedTasksCount().subscribe((res) => {
+      if (res && res.count != undefined) {
+        this.hasTaggedTasks.set(res.count > 0);
+      }
+    });
   }
 
   logout() {

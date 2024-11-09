@@ -26,6 +26,12 @@ export class TasksService {
     );
   }
 
+  getTaggedTasksCount(): Observable<{ count: number }> {
+    return this._http.get<{ count: number }>(
+      `${environment.API_URL}tasks/tagged/count`
+    );
+  }
+
   toggleCompleteTask(taskId: string): Observable<any> {
     return this._http.patch(
       `${environment.API_URL}tasks/${taskId}/toggle-complete`,

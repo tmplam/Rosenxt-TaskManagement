@@ -13,6 +13,16 @@ public class TaskUserTagRepository(ApplicationDbContext _dbContext) : ITaskUserT
         return addedTag.Entity;
     }
 
+    public async Task<int> CountAsync(Expression<Func<TaskUserTag, bool>>? predicate)
+    {
+        var tags = _dbContext.Set<TaskUserTag>().AsQueryable();
+        if (predicate is not null)
+        {
+            tags = tags.Where(predicate);
+        }    
+        return await tags.CountAsync();
+    }
+
     public TaskUserTag Delete(TaskUserTag taskUserTag)
     {
         var removeTag = _dbContext.Set<TaskUserTag>().Remove(taskUserTag);

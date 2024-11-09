@@ -10,4 +10,5 @@ public interface ITaskUserTagRepository
     Task<TaskUserTag?> GetAsync(Expression<Func<TaskUserTag, bool>> predicate);
     Task<List<TaskUserTag>> GetAllAsync(Expression<Func<TaskUserTag, bool>> predicate);
     TaskUserTag Delete(TaskUserTag taskUserTag);
+    Task<int> CountAsync(Expression<Func<TaskUserTag, bool>>? predicate);
 }

@@ -11,6 +11,7 @@ using TaskManagement.Application.Features.Tasks.Commands.TagUsersToTask;
 using TaskManagement.Application.Features.Tasks.Commands.ToggleCompleteTask;
 using TaskManagement.Application.Features.Tasks.Commands.UpdateTask;
 using TaskManagement.Application.Features.Tasks.Queries.GetTaggedTasks;
+using TaskManagement.Application.Features.Tasks.Queries.GetTaggedTasksCount;
 using TaskManagement.Application.Features.Tasks.Queries.GetTaskById;
 using TaskManagement.Application.Features.Tasks.Queries.GetTasks;
 
@@ -91,6 +92,15 @@ public class TasksController(ISender _sender) : ControllerBase
         var query = new GetTaggedTasksQuery();
         var result = await _sender.Send(query);
         var response = result.Adapt<GetTaggedTasksResponse>();
+        return Ok(response);
+    }
+
+    [HttpGet("tagged/count")]
+    public async Task<IActionResult> GetTaggedTasksCount()
+    {
+        var query = new GetTaggedTasksCountQuery();
+        var result = await _sender.Send(query);
+        var response = result.Adapt<GetTaggedTasksCountResponse>();
         return Ok(response);
     }
 
