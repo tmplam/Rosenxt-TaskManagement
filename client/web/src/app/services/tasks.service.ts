@@ -20,6 +20,12 @@ export class TasksService {
     );
   }
 
+  getTaggedTasks(): Observable<{ taggedTasks: Task[] }> {
+    return this._http.get<{ taggedTasks: Task[] }>(
+      `${environment.API_URL}tasks/tagged`
+    );
+  }
+
   toggleCompleteTask(taskId: string): Observable<any> {
     return this._http.patch(
       `${environment.API_URL}tasks/${taskId}/toggle-complete`,

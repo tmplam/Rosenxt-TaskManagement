@@ -5,5 +5,6 @@ public record TaskItemDto(
     string Title,
     bool IsCompleted,
     int? RemindBeforeDeadlineByMinutes,
+    UserDto User,
     DateTimeOffset DueDate,
     DateTimeOffset? ModifiedAt);

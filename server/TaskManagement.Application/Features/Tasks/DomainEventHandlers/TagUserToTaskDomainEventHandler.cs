@@ -16,7 +16,7 @@ public class TagUserToTaskDomainEventHandler(
         var task = await _taskRepository.GetByIdAsync(notification.TaskId);
         if (task != null && user != null)
         {
-            await _emailService.SendTagEmailAsync(task, user, cancellationToken);
+            //await _emailService.SendTagEmailAsync(task, user, cancellationToken);
         }
     }
 }

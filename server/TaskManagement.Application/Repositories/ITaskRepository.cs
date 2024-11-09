@@ -7,7 +7,7 @@ namespace TaskManagement.Application.Repositories;
 public interface ITaskRepository
 {
     Task<TaskItem?> GetByIdAsync(Guid id);
-    Task<List<TaskItem>> GetAllAsync(Expression<Func<TaskItem, bool>>? predicate = null);
+    Task<List<TaskItem>> GetAllAsync(Expression<Func<TaskItem, bool>>? predicate = null, bool includeUser = false);
     Task<List<(User User, List<TaskItem> DueTasks)>> GetAllDueTasksAsync();
     Task<TaskItem> AddAsync(TaskItem task);
     TaskItem Update(TaskItem task);

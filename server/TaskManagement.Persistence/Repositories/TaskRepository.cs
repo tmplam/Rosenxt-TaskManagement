@@ -15,14 +15,19 @@ public class TaskRepository(ApplicationDbContext _dbContext) : ITaskRepository
         return task;
     }
 
-    public async Task<List<TaskItem>> GetAllAsync(Expression<Func<TaskItem, bool>>? predicate = null)
+    public async Task<List<TaskItem>> GetAllAsync(Expression<Func<TaskItem, bool>>? predicate = null, bool includeUser = false)
     {
         var tasks = _dbContext.Set<TaskItem>().AsQueryable();
         if (predicate is not null)
         {
             tasks = tasks.Where(predicate);
         }
+        if (includeUser)
+        {
+            tasks = tasks.Include(task => task.User);
+        }
         tasks = tasks.OrderByDescending(task => task.CreatedAt);
+
         return await tasks.ToListAsync();
     }
 

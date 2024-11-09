@@ -8,6 +8,7 @@ using TaskManagement.Application.Features.Tasks.Commands.DeleteTask;
 using TaskManagement.Application.Features.Tasks.Commands.TagUsersToTask;
 using TaskManagement.Application.Features.Tasks.Commands.ToggleCompleteTask;
 using TaskManagement.Application.Features.Tasks.Commands.UpdateTask;
+using TaskManagement.Application.Features.Tasks.Queries.GetTaggedTasks;
 using TaskManagement.Application.Features.Tasks.Queries.GetTaskById;
 using TaskManagement.Application.Features.Tasks.Queries.GetTasks;
 
@@ -79,6 +80,16 @@ public class TasksController(ISender _sender) : ControllerBase
         var command = request.Adapt<TagUsersToTaskCommand>();
         var result = await _sender.Send(command);
         var response = result.Adapt<TagUsersToTaskResponse>();
+        return Ok(response);
+    }
+
+    [HttpGet("tagged")]
+    public async Task<IActionResult> GetTaggedTasks()
+    {
+        Thread.Sleep(1000);
+        var query = new GetTaggedTasksQuery();
+        var result = await _sender.Send(query);
+        var response = result.Adapt<GetTaggedTasksResponse>();
         return Ok(response);
     }
 }

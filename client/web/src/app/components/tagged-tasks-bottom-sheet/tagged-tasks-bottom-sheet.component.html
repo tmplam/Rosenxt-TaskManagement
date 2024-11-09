@@ -1,13 +1,26 @@
-<div class="pt-3 px-1 max-h-64 min-w-[480px]">
+<div class="py-3 px-1 max-h-64 min-w-[480px]">
+  @if (isFetchingTaggedTask()) {
+  <div class="flex justify-center">
+    <div
+      class="spinner-border animate-spin inline-block w-10 h-10 border-4 border-primary rounded-full border-r-transparent"
+    ></div>
+  </div>
+  } @else if (taggedTasks().length == 0) {
+  <div class="text-center">
+    <span class="text-danger">No task was tagged to you!</span>
+  </div>
+  } @else { @for (task of taggedTasks(); track task.id) {
   <div
-    class="py-2 px-4 rounded-3xl bg-slate-200 hover:bg-slate-300 flex justify-between items-center mb-3"
+    class="py-2 px-4 rounded-3xl bg-slate-200 hover:bg-slate-300 flex justify-between items-center mb-3 last:mb-0"
   >
     <div>
-      <span class="line-clamp-1">Go to gym with team</span>
+      <span class="line-clamp-1">{{ task.title }}</span>
       <span class="line-clamp-1 text-xs">
-        <b>Tagged by:</b> Trần mỹ phú Lâm
+        <b>Tagged by:</b> <span> {{ task.user?.email }}</span>
       </span>
-      <span class="line-clamp-1 text-xs"> <b>Due:</b> 20/03/2003 </span>
+      <span class="line-clamp-1 text-xs">
+        <b>Due:</b> {{ task.dueDate | date : "short" }}
+      </span>
     </div>
     <div>
       <button mat-icon-button class="mr-1" matTooltip="Accept">
@@ -18,4 +31,5 @@
       </button>
     </div>
   </div>
+  } }
 </div>
